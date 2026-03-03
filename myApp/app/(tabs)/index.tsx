@@ -17,19 +17,20 @@ export default function HomeScreen() {
 
     
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#b49c12', dark: '#c08d1e' }}
       headerImage={
         <Image
           source={require('@/assets/images/index_roman_eagle_bg.png')}
           style={styles.reactLogo}
         />
       }>
+ 
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Wybierz kategorię</ThemedText>
         <HelloWave />
       </ThemedView>
 
-      <ThemedView style={{flexDirection: 'column',alignItems: 'center',}}> {/* glowny kontener */}
+      <ThemedView style={{flexDirection: 'column',alignItems: 'center', gap: 20}}> {/* glowny kontener */}
       
       <Link href="/explore" >
         <ThemedView style={styles.categoryButton}>
@@ -41,13 +42,26 @@ export default function HomeScreen() {
           />
         </ThemedView>
       </Link>
-      <Link href="/explore" style={[styles.categoryButton,{ backgroundColor: '#4d0a0aff' }]}>
-        <ThemedText style={styles.buttonTitle}>Polska Piastów</ThemedText>
+      <Link href="/explore" >
+        <ThemedView style={[styles.categoryButton,{ backgroundColor: '#4d0a0aff' }]}>
+          <ThemedText style={styles.buttonTitle}>Polska Piastów</ThemedText>
+          <Image
+          source={require('@/assets/images/categorybackground_rome.png')}
+          style={{ width: '50%', height: '100%', opacity:0.5}}
+          contentFit="cover"
+          />
+        </ThemedView>
       </Link>
-      <Link href="/explore" style={[styles.categoryButton,{ backgroundColor: '#17360bff' }]}>
-        <ThemedText style={styles.buttonTitle}>II Wojna Światowa</ThemedText>
+      <Link href="/explore" >
+        <ThemedView style={[styles.categoryButton,{ backgroundColor: 'rgb(32, 99, 12)' }]}>
+          <ThemedText style={styles.buttonTitle}>II Wojna Światowa</ThemedText>
+          <Image
+          source={require('@/assets/images/categorybackground_rome.png')}
+          style={{ width: '50%', height: '100%', opacity:0.5}}
+          contentFit="cover"
+          />
+        </ThemedView>
       </Link>
-
       <ThemedView>
         <ThemedText type="subtitle">
           Więcej kategorii wkrótce...
