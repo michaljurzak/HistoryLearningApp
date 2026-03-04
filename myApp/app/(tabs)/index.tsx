@@ -46,7 +46,7 @@ export default function HomeScreen() {
         <ThemedView style={[styles.categoryButton,{ backgroundColor: '#4d0a0aff' }]}>
           <ThemedText style={styles.buttonTitle}>Polska Piastów</ThemedText>
           <Image
-          source={require('@/assets/images/categorybackground_rome.png')}
+          source={require('@/assets/images/categorybackground_piast.png')}
           style={{ width: '50%', height: '100%', opacity:0.5}}
           contentFit="cover"
           />
@@ -56,7 +56,7 @@ export default function HomeScreen() {
         <ThemedView style={[styles.categoryButton,{ backgroundColor: 'rgb(32, 99, 12)' }]}>
           <ThemedText style={styles.buttonTitle}>II Wojna Światowa</ThemedText>
           <Image
-          source={require('@/assets/images/categorybackground_rome.png')}
+          source={require('@/assets/images/categorybackground_ww2.png')}
           style={{ width: '50%', height: '100%', opacity:0.5}}
           contentFit="cover"
           />
