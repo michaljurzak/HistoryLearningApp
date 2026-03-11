@@ -32,7 +32,7 @@ export default function HomeScreen() {
 
       <ThemedView style={{flexDirection: 'column',alignItems: 'center', gap: 20}}> {/* glowny kontener */}
       
-      <Link href="/explore" >
+      <Link href="/quiz/rome" >
         <ThemedView style={styles.categoryButton}>
           <ThemedText style={styles.buttonTitle}>Starożytny Rzym</ThemedText>
           <Image
