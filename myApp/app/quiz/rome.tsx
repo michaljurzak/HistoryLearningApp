@@ -1,6 +1,7 @@
-import { StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, Pressable, Alert } from 'react-native';
 import { useState } from 'react';
-import { useLocalSearchParams } from 'expo-router';
+import { useRouter } from 'expo-router'; // To go back home
+import { useUser } from '../context/UserContext'; // Adjust path if needed
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -24,24 +25,41 @@ const questions = [
   },
 ];
 
-
 export default function QuizScreen() {
-  
+  const router = useRouter();
+  const { addExp } = useUser(); // Hook into our EXP system
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
+  const [score, setScore] = useState(0); // Track correct answers
 
   const question = questions[currentQuestion];
   
   function handleAnswer(index: number) {
+    if (selected !== null) return; // Prevent changing answer
     setSelected(index);
+    
+    // If correct, add points to local score
+    if (index === question.correct) {
+      setScore(prev => prev + 100); 
+    }
   }
+
   function nextQuestion() {
-  if (currentQuestion < questions.length - 1) {
-    setCurrentQuestion(currentQuestion + 1);
-    setSelected(null);
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      setSelected(null);
+    } else {
+      // QUIZ FINISHED
+      addExp(score); // Send the total score to our Context Bank
+      
+      Alert.alert(
+        "Koniec Quizu!", 
+        `Zdobyłeś ${score} punktów EXP!`,
+        [{ text: "OK", onPress: () => router.replace('/') }] // Go back home
+      );
+    }
   }
-}
 
   return (
     <ThemedView style={styles.screen}>
@@ -71,9 +89,15 @@ export default function QuizScreen() {
           </Pressable>
         ))}
       </ThemedView>
-      <Pressable style={styles.nextButton} onPress={nextQuestion}>
-        <ThemedText>Następne pytanie</ThemedText>
-      </Pressable>
+      
+      {/* Only show "Next" button if an answer is selected */}
+      {selected !== null && (
+        <Pressable style={styles.nextButton} onPress={nextQuestion}>
+          <ThemedText style={{ color: 'white', fontWeight: 'bold' }}>
+            {currentQuestion < questions.length - 1 ? "Następne pytanie" : "Zakończ Quiz"}
+          </ThemedText>
+        </Pressable>
+      )}
     </ThemedView>
   );
 }
@@ -82,34 +106,31 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 20,
+    paddingTop: 60, // Added some padding for the top
   },
-
   container: {
     marginTop: 30,
     gap: 12,
   },
-
   question: {
     fontSize: 20,
     marginBottom: 10,
   },
-
   questionBlock: {
     padding: 16,
     borderRadius: 10,
-    backgroundColor: 'gray',
+    backgroundColor: '#333', // Changed from gray for better contrast
   },
   nextButton: {
-  marginTop: 20,
-  padding: 15,
-  backgroundColor: "#3b82f6",
-  borderRadius: 10,
-  alignItems: "center",
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: "#3b82f6",
+    borderRadius: 10,
+    alignItems: "center",
   },
   correct: {
     backgroundColor: '#4CAF50',
   },
-
   wrong: {
     backgroundColor: '#E53935',
   },

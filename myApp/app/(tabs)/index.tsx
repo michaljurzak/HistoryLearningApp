@@ -9,21 +9,36 @@ import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
 import { Button } from '@react-navigation/elements';
 
-
+import { useUser } from '../context/UserContext';
 
 export default function HomeScreen() {
   
+  const { exp } = useUser(); // Get the real live EXP
+  
+  // Logic for leveling (e.g., 1000 XP per level)
+  const currentLevel = Math.floor(exp / 1000) + 1;
+  const expInCurrentLevel = exp % 1000;
+  const progress = (expInCurrentLevel / 1000) * 100;
   return (
 
     
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#b49c12', dark: '#c08d1e' }}
+      headerBackgroundColor={{ light: '#3d12b4', dark: '#1a008b' }}
       headerImage={
         <Image
-          source={require('@/assets/images/index_roman_eagle_bg.png')}
+          source={require('@/assets/images/eagle_icon.png')}
           style={styles.reactLogo}
         />
       }>
+        <ThemedView style={styles.expContainer}>
+        <ThemedView style={styles.expHeader}>
+          <ThemedText type="defaultSemiBold">Poziom {currentLevel}</ThemedText>
+          <ThemedText style={styles.expTextSmall}>{expInCurrentLevel} / 1000 XP</ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.expTrack}>
+          <ThemedView style={[styles.expFill, { width: `${progress}%` }]} />
+        </ThemedView>
+      </ThemedView>
  
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Wybierz kategorię</ThemedText>
@@ -37,8 +52,8 @@ export default function HomeScreen() {
           <ThemedText style={styles.buttonTitle}>Starożytny Rzym</ThemedText>
           <Image
           source={require('@/assets/images/categorybackground_rome.png')}
-          style={{ width: '50%', height: '100%', opacity:0.5}}
-          contentFit="cover"
+          style={{ width: '100%', height: '100%', opacity:0.5}}
+          contentFit='cover'
           />
         </ThemedView>
       </Link>
@@ -70,59 +85,6 @@ export default function HomeScreen() {
 
     </ThemedView>
      
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
-
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
     </ParallaxScrollView>
   );
 }
@@ -138,7 +100,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   reactLogo: {
-    height: 178,
+    height: '100%',
     width: 290,
     bottom: 0,
     left: 0,
@@ -162,6 +124,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  //exp bar
+  expContainer: {
+    padding: 15,
+    borderRadius: 12,
+    backgroundColor: 'rgba(0,0,0,0.05)', // Subtle background
+    marginVertical: 10,
+  },
+  expHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginBottom: 6,
+  },
+  expTextSmall: {
+    fontSize: 12,
+    opacity: 0.7,
+  },
+  expTrack: {
+    height: 10,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  expFill: {
+    height: '100%',
+    backgroundColor: '#4CAF50', // Nice "level up" green
+    borderRadius: 5,
   },
   
 });
